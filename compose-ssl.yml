@@ -1,0 +1,62 @@
+services:
+  # Database PostgreSQL
+  db:
+    image: postgres:18-alpine
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./db:/db
+    networks:
+      - appnet
+    restart: unless-stopped
+
+  # Application Server Django
+  web:
+    build: ./web/
+    env_file: .env
+    command: uwsgi --ini uwsgi.ini
+    volumes:
+      - ./web:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - appnet
+    restart: unless-stopped
+    ports:
+      - "8010:8001"
+
+  # Web Server Nginx
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx-ssl.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/cert.pem:/etc/nginx/cert.pem
+      - ./nginx/privkey.pem:/etc/nginx/privkey.pem
+      - ./nginx/dhparam.pem:/etc/nginx/dhparam.pem
+      - ./web/STATIC:/STATIC/
+    networks:
+      - appnet
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.6.1-alpine
+    volumes:
+      - redis_data:/data
+    sysctls:
+      net.core.somaxconn: '511'
+    restart: unless-stopped
+    # ports:
+    #  - 127.0.0.1:6379:6379
+    networks:
+      - appnet
+
+networks:
+  appnet:
+
+volumes:
+  pg_data: {}
+  redis_data: {}
