@@ -1,0 +1,17 @@
+services:
+  # Database PostgreSQL
+  db:
+    image: postgres:18-alpine # Versione corrente supportata [15]
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./db:/db
+    networks:
+      - appnet
+    restart: unless-stopped
+
+networks:
+  appnet:
+
+volumes:
+  pg_data: {}
