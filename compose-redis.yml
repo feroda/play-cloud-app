@@ -1,0 +1,17 @@
+services:
+  redis:
+    image: redis:8.6.1-alpine
+    volumes:
+      - redis_data:/data
+    sysctls:
+      net.core.somaxconn: '511'
+    restart: unless-stopped
+    networks:
+      - appnet
+
+networks:
+  appnet:
+
+volumes:
+  redis_data: {}
+
