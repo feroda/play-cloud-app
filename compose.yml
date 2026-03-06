@@ -13,6 +13,7 @@ services:
   # Application Server Django
   web:
     build: ./web/
+    env_file: .env
     command: uwsgi --ini uwsgi.ini
     volumes:
       - ./web:/app
@@ -22,6 +23,8 @@ services:
     networks:
       - appnet
     restart: unless-stopped
+    ports:
+      - "8010:8001"
 
   # Web Server Nginx
   nginx:
