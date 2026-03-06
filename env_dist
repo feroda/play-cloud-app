@@ -1,4 +1,8 @@
 POSTGRES_DB=changeme
 POSTGRES_USER=changeme
 POSTGRES_PASSWORD=changeme
+POSTGRES_PORT=5432
+
+DEBUG=true
+SECRET_KEY='django-insecure-gxdty445qhf+99#u$1_d_1*54*(!if$u=_zn#gi&18ufvifkr4'
 
