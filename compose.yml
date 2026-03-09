@@ -3,6 +3,7 @@ services:
   db:
     image: postgres:18-alpine
     env_file: .env
+    shm_size: 128mb
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./db:/db
