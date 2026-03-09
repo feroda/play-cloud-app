@@ -5,7 +5,7 @@ services:
     env_file: .env
     shm_size: 128mb
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg:/var/lib/postgresql/
       - ./db:/db
     networks:
       - appnet
@@ -55,5 +55,5 @@ networks:
   appnet:
 
 volumes:
-  pg_data: {}
+  pg: {}
   redis_data: {}
